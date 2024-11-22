@@ -35,15 +35,13 @@ const Invoice = () => {
     poNumber: "",
   });
 
+  const API_URL = "https://finifi-backend.onrender.com";
+
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const res = await axios.get(
-          "https://finifi-backend.vercel.app/getinvoices"
-        );
-
+        const res = await axios.get(`${API_URL}/api/getinvoices`);
         const shuffledInvoices = shuffleArray(res.data.data.invoices);
-
         setInvoices(shuffledInvoices);
         setFilteredInvoices(shuffledInvoices);
       } catch (err) {
@@ -140,7 +138,7 @@ const Invoice = () => {
   const handleSubmit = async () => {
     try {
       const res = await axios.post(
-        "https://finifi-backend.vercel.app/?vercelToolbarCode=huOjnPMjNY4sjS0/api/createInvoice",
+        `${API_URL}/api/createInvoice`,
         {
           ...invoiceData,
           createdTime: new Date().toLocaleTimeString([], {
@@ -196,9 +194,7 @@ const Invoice = () => {
 
   const handleDeleteInvoice = async () => {
     try {
-      await axios.delete(
-        `https://finifi-backend.vercel.app/?vercelToolbarCode=huOjnPMjNY4sjS0/api/deleteInvoice/${invoiceToDelete._id}`
-      );
+      await axios.delete(`${API_URL}/api/deleteInvoice/${invoiceToDelete._id}`);
       setInvoices((prevInvoices) =>
         prevInvoices.filter((invoice) => invoice._id !== invoiceToDelete._id)
       );
@@ -218,7 +214,7 @@ const Invoice = () => {
   const handleUpdateSubmit = async () => {
     try {
       const updatedInvoiceResponse = await axios.put(
-        `https://finifi-backend.vercel.app/?vercelToolbarCode=huOjnPMjNY4sjS0/api/updateInvoice/${invoiceData._id}`,
+        `${API_URL}/api/updateInvoice/${invoiceData._id}`,
         invoiceData
       );
 
